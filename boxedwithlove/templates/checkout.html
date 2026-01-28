@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Checkout | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="space-y-6">
+  <h1 class="text-3xl font-bold">Checkout</h1>
+  <div class="flex gap-3 text-sm font-semibold">
+    <span class="px-3 py-1 rounded-full bg-brand-soft/60">1 Shipping</span>
+    <span class="px-3 py-1 rounded-full bg-brand-soft/30 text-brand-secondary">2 Payment</span>
+    <span class="px-3 py-1 rounded-full bg-brand-soft/30 text-brand-secondary">3 Review</span>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-[1fr_320px]">
+    <div class="space-y-6">
+      <div class="card p-5 space-y-4">
+        <h2 class="text-xl font-semibold">Shipping details</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="text-sm font-semibold">First name
+            <input name="first_name" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" />
+          </label>
+          <label class="text-sm font-semibold">Last name
+            <input name="last_name" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" />
+          </label>
+          <label class="text-sm font-semibold md:col-span-2">Address
+            <input name="address" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" />
+          </label>
+          <label class="text-sm font-semibold">City
+            <input name="city" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" />
+          </label>
+          <label class="text-sm font-semibold">Postal code
+            <input name="postal" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" />
+          </label>
+        </div>
+      </div>
+
+      <div class="card p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold">Payment methods</h2>
+          <button class="btn-secondary" id="toggle-payment-form">Add new</button>
+        </div>
+        <div id="payment-form" class="hidden grid gap-3 md:grid-cols-3">
+          <label class="text-sm font-semibold">Brand
+            <input name="brand" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" placeholder="Visa" />
+          </label>
+          <label class="text-sm font-semibold">Last 4
+            <input name="last4" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" placeholder="1234" />
+          </label>
+          <label class="text-sm font-semibold">Expiry
+            <input name="expiry" class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" placeholder="12/27" />
+          </label>
+          <div class="md:col-span-3">
+            <button class="btn-primary" id="save-payment">Save payment method</button>
+          </div>
+        </div>
+        <div class="space-y-3" id="payment-list">
+          {% if methods %}
+            {% for method in methods %}
+              <div class="flex items-center justify-between border border-brand-soft rounded-xl p-3">
+                <div>
+                  <p class="font-semibold">{{ method.brand }} •••• {{ method.last4 }}</p>
+                  <p class="text-sm text-brand-secondary">Exp {{ method.expiry }}</p>
+                </div>
+                <button class="btn-secondary remove-payment" data-method-id="{{ method.id }}">Remove</button>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-sm text-brand-secondary">No saved payment methods yet.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card p-5 space-y-4">
+        <h2 class="text-xl font-semibold">Review items</h2>
+        {% if items %}
+          <ul class="space-y-3">
+            {% for item in items %}
+            <li class="flex items-center justify-between">
+              <span>{{ item.product.name }} × {{ item.quantity }}</span>
+              <span>${{ '%.2f'|format(item.product.price * item.quantity) }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-sm text-brand-secondary">Your cart is empty.</p>
+        {% endif %}
+        <button class="btn-primary" id="place-order" data-has-items="{{ 'true' if items else 'false' }}">Place order</button>
+      </div>
+    </div>
+
+    <aside class="card p-5 space-y-3 h-fit">
+      <h2 class="font-semibold">Order summary</h2>
+      <div class="flex justify-between text-sm text-brand-secondary">
+        <span>Subtotal</span>
+        <span>${{ '%.2f'|format(summary.subtotal) }}</span>
+      </div>
+      <div class="flex justify-between text-sm text-brand-secondary">
+        <span>Estimated tax</span>
+        <span>${{ '%.2f'|format(summary.tax) }}</span>
+      </div>
+      <div class="flex justify-between font-semibold">
+        <span>Total</span>
+        <span>${{ '%.2f'|format(summary.total) }}</span>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}

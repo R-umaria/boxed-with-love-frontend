@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}BoxedWithLove{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body class="min-h-screen">
+    <header class="bg-brand-bg/90 backdrop-blur border-b border-brand-soft/60">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <div class="flex items-center gap-6">
+          <a href="{{ url_for('main.home') }}" class="text-xl font-bold text-brand-text">BoxedWithLove</a>
+          <a href="{{ url_for('products.product_list') }}" class="text-brand-secondary font-semibold">Shop</a>
+        </div>
+        <form action="{{ url_for('products.product_list') }}" method="get" class="hidden md:flex items-center gap-2">
+          <label for="nav-search" class="sr-only">Search products</label>
+          <input
+            id="nav-search"
+            type="search"
+            name="search"
+            placeholder="Search gifts"
+            class="w-64 rounded-xl border border-brand-soft bg-white/80 px-3 py-2"
+          />
+          <button class="btn-secondary" type="submit">Search</button>
+        </form>
+        <div class="flex items-center gap-3">
+          <a href="{{ url_for('cart.cart_view') }}" class="btn-secondary">Cart</a>
+          {% if current_user %}
+          <a href="{{ url_for('orders.orders_list_view') }}" class="btn-primary">Account</a>
+          {% else %}
+          <a href="{{ url_for('auth.login') }}" class="btn-primary">Login</a>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
+
+    <main class="mx-auto w-full max-w-6xl px-4 py-8">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-brand-text text-white mt-16">
+      <div class="mx-auto max-w-6xl px-4 py-8 grid gap-6 md:grid-cols-3">
+        <div>
+          <h3 class="text-lg font-semibold">BoxedWithLove</h3>
+          <p class="text-sm text-white/80 mt-2">Hand-curated gift boxes to celebrate every moment.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold">Customer Care</h4>
+          <ul class="mt-2 space-y-2 text-sm text-white/80">
+            <li>support@boxedwithlove.com</li>
+            <li>Shipping & returns</li>
+            <li>Gift subscriptions</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold">Stay connected</h4>
+          <p class="text-sm text-white/80 mt-2">Follow us for new arrivals and seasonal collections.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="toast-root" class="fixed bottom-6 right-6 space-y-3 z-50"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

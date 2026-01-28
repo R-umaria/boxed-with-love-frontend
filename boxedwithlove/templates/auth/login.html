@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Login | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="max-w-md mx-auto card p-6 space-y-4">
+  <h1 class="text-2xl font-bold">Welcome back</h1>
+  {% if error %}
+  <div class="rounded-xl bg-brand-soft/60 p-3 text-sm text-brand-secondary">{{ error }}</div>
+  {% endif %}
+  <form method="post" class="space-y-4">
+    <label class="text-sm font-semibold">Email
+      <input name="email" type="email" required class="mt-1 w-full rounded-xl border border-brand-soft bg-white/80 px-3 py-2" />
+    </label>
+    <button class="btn-primary w-full" type="submit">Login</button>
+  </form>
+  <p class="text-sm text-brand-secondary">New here? <a class="text-brand-accent font-semibold" href="{{ url_for('auth.signup') }}">Create an account</a>.</p>
+</section>
+{% endblock %}

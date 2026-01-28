@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Cart | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="space-y-6">
+  <h1 class="text-3xl font-bold">Your cart</h1>
+  {% if items %}
+  <div class="grid gap-6 lg:grid-cols-[1fr_320px]">
+    <div class="space-y-4">
+      {% for item in items %}
+      <div class="card p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div class="h-20 w-24 rounded-xl bg-brand-bg flex items-center justify-center text-brand-secondary">Image</div>
+        <div class="flex-1">
+          <h2 class="font-semibold">{{ item.product.name }}</h2>
+          <p class="text-sm text-brand-secondary">${{ '%.2f'|format(item.product.price) }}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="btn-secondary qty-decrease" data-item-id="{{ item.id }}">-</button>
+          <span class="w-8 text-center" data-qty="{{ item.id }}">{{ item.quantity }}</span>
+          <button class="btn-secondary qty-increase" data-item-id="{{ item.id }}">+</button>
+        </div>
+        <button class="btn-secondary remove-item" data-item-id="{{ item.id }}">Remove</button>
+      </div>
+      {% endfor %}
+    </div>
+    <aside class="card p-5 space-y-3 h-fit">
+      <h2 class="font-semibold">Summary</h2>
+      <div class="flex justify-between text-sm text-brand-secondary">
+        <span>Subtotal</span>
+        <span>${{ '%.2f'|format(summary.subtotal) }}</span>
+      </div>
+      <div class="flex justify-between text-sm text-brand-secondary">
+        <span>Estimated tax</span>
+        <span>${{ '%.2f'|format(summary.tax) }}</span>
+      </div>
+      <div class="flex justify-between font-semibold">
+        <span>Total</span>
+        <span>${{ '%.2f'|format(summary.total) }}</span>
+      </div>
+      <a href="{{ url_for('checkout.checkout_view') }}" class="btn-primary w-full text-center">Proceed to checkout</a>
+    </aside>
+  </div>
+  {% else %}
+  <div class="card p-6 text-center">
+    <p class="text-brand-secondary">Your cart is empty. Find something special.</p>
+    <a href="{{ url_for('products.product_list') }}" class="btn-primary mt-4">Shop gifts</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}
