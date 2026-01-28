@@ -1,0 +1,12 @@
+{
+  "name": "boxedwithlove",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./boxedwithlove/static/css/input.css -o ./boxedwithlove/static/css/styles.css --minify",
+    "dev:css": "npx tailwindcss -i ./boxedwithlove/static/css/input.css -o ./boxedwithlove/static/css/styles.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  }
+}

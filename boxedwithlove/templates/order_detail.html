@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.id[:8] }} | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold">Order #{{ order.id[:8] }}</h1>
+      <p class="text-brand-secondary">Placed {{ order.created_at.strftime('%b %d, %Y') }}</p>
+    </div>
+    <span class="rounded-full px-3 py-1 text-xs bg-brand-soft/60">{{ order.status }}</span>
+  </div>
+
+  <div class="card p-5 space-y-3">
+    <h2 class="font-semibold">Items</h2>
+    <ul class="space-y-2">
+      {% for item in items %}
+      <li class="flex items-center justify-between">
+        <span>{{ item.product.name }} × {{ item.quantity }}</span>
+        <span>${{ '%.2f'|format(item.product.price * item.quantity) }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="flex justify-between font-semibold border-t border-brand-soft/60 pt-3">
+      <span>Total</span>
+      <span>${{ '%.2f'|format(order.total) }}</span>
+    </div>
+  </div>
+
+  <div class="card p-5">
+    <h2 class="font-semibold">Shipping</h2>
+    <p class="text-sm text-brand-secondary">{{ order.shipping.get('address', 'Standard shipping') }}</p>
+  </div>
+</section>
+{% endblock %}

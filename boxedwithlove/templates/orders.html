@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Orders | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold">Order history</h1>
+    <a href="{{ url_for('auth.logout') }}" class="btn-secondary">Log out</a>
+  </div>
+  {% if orders %}
+  <div class="space-y-4">
+    {% for order in orders %}
+    <a href="{{ url_for('orders.order_detail_view', order_id=order.id) }}" class="card p-4 flex items-center justify-between">
+      <div>
+        <p class="font-semibold">Order #{{ order.id[:8] }}</p>
+        <p class="text-sm text-brand-secondary">{{ order.created_at.strftime('%b %d, %Y') }}</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="rounded-full px-3 py-1 text-xs bg-brand-soft/60">{{ order.status }}</span>
+        <span class="font-semibold">${{ '%.2f'|format(order.total) }}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card p-6 text-center">
+    <p class="text-brand-secondary">No orders yet. Start gifting today.</p>
+    <a href="{{ url_for('products.product_list') }}" class="btn-primary mt-4">Shop gifts</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

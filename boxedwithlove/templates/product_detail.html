@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="grid gap-8 lg:grid-cols-2">
+  <div class="card p-6">
+    <div class="h-72 rounded-xl bg-brand-bg flex items-center justify-center text-brand-secondary">Product image</div>
+  </div>
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-3xl font-bold">{{ product.name }}</h1>
+      <p class="text-brand-secondary">Rating {{ product.rating }} · ${{ '%.2f'|format(product.price) }}</p>
+    </div>
+    <p class="text-brand-secondary">{{ product.description }}</p>
+    <div>
+      <h2 class="font-semibold">What's inside</h2>
+      <ul class="mt-2 list-disc list-inside text-brand-secondary">
+        {% for item in product.whats_inside %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="flex items-center gap-3">
+      <label for="quantity" class="font-semibold">Qty</label>
+      <input
+        id="quantity"
+        type="number"
+        min="1"
+        value="1"
+        class="w-20 rounded-xl border border-brand-soft bg-white/80 px-3 py-2"
+      />
+    </div>
+    <button
+      class="btn-primary add-to-cart"
+      data-product-id="{{ product.id }}"
+      data-product-name="{{ product.name }}"
+    >
+      Add to cart
+    </button>
+  </div>
+</section>
+
+<div class="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-brand-soft/60 p-4 lg:hidden">
+  <div class="mx-auto max-w-6xl flex items-center justify-between gap-4">
+    <div>
+      <p class="font-semibold">${{ '%.2f'|format(product.price) }}</p>
+      <p class="text-xs text-brand-secondary">Ready to ship</p>
+    </div>
+    <button
+      class="btn-primary add-to-cart"
+      data-product-id="{{ product.id }}"
+      data-product-name="{{ product.name }}"
+    >
+      Add to cart
+    </button>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}

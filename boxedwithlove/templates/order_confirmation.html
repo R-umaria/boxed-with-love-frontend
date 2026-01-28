@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Order Confirmed | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="card p-8 text-center space-y-4">
+  <div class="mx-auto h-16 w-16 rounded-full bg-brand-soft/70 flex items-center justify-center text-2xl">✓</div>
+  <h1 class="text-3xl font-bold">Order confirmed!</h1>
+  <p class="text-brand-secondary">Your order #{{ order.id[:8] }} is being prepared with love.</p>
+  <p class="font-semibold">Total paid: ${{ '%.2f'|format(order.total) }}</p>
+  <div class="flex flex-col sm:flex-row gap-3 justify-center">
+    <a href="{{ url_for('orders.order_detail_view', order_id=order.id) }}" class="btn-secondary">View order</a>
+    <a href="{{ url_for('products.product_list') }}" class="btn-primary">Continue shopping</a>
+  </div>
+</section>
+{% endblock %}

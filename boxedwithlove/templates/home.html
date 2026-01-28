@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Home | BoxedWithLove{% endblock %}
+{% block content %}
+<section class="grid gap-10 md:grid-cols-2 items-center">
+  <div class="space-y-6">
+    <p class="text-sm uppercase tracking-wide text-brand-secondary">Thoughtful gifts</p>
+    <h1 class="text-4xl md:text-5xl font-bold text-brand-text">Send love in a box.</h1>
+    <p class="text-lg text-brand-secondary">Curated gift baskets designed to comfort, celebrate, and delight.</p>
+    <a href="{{ url_for('products.product_list') }}" class="btn-primary">Shop now</a>
+  </div>
+  <div class="card p-6 bg-white/80">
+    <div class="h-64 rounded-xl bg-brand-soft/60 flex items-center justify-center text-brand-secondary">
+      Hero gift imagery placeholder
+    </div>
+  </div>
+</section>
+
+<section class="mt-12">
+  <h2 class="text-2xl font-semibold">Featured categories</h2>
+  <div class="grid gap-4 md:grid-cols-3 mt-4">
+    {% for category in categories %}
+    <div class="card p-5">
+      <h3 class="font-semibold text-lg">{{ category.name }}</h3>
+      <p class="text-sm text-brand-secondary mt-1">{{ category.description }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mt-12">
+  <h2 class="text-2xl font-semibold">Featured gifts</h2>
+  <div class="grid gap-6 md:grid-cols-3 mt-4">
+    {% for product in featured %}
+    <div class="card p-5 flex flex-col gap-3">
+      <div class="h-40 rounded-xl bg-brand-bg flex items-center justify-center text-brand-secondary">Image</div>
+      <div>
+        <h3 class="font-semibold">{{ product.name }}</h3>
+        <p class="text-sm text-brand-secondary">${{ '%.2f'|format(product.price) }}</p>
+      </div>
+      <a href="{{ url_for('products.product_detail', product_id=product.id) }}" class="btn-secondary">View details</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
